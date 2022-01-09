@@ -26,7 +26,7 @@ $app->get('/admin', function() {
     
 	$page = new PageAdmin();
 
-	$page->setTpl("index");
+	$page->setTpl("admin/index");
 
 });
 
@@ -54,7 +54,7 @@ $app->get('/admin/logout', function() {
 
 	User::logout();
 
-	header("Location /admin/login");
+	header("Location: /admin/login");
 	exit;
 
 });
