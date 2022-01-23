@@ -2,24 +2,29 @@
 
 session_start();
 require_once("vendor/autoload.php");
-
+// \slim\slim para utilizar a biblioteca Slim para o gerenciamento de rotas
+// \hcode\page para construcao de paginas de usuarios via rain/tpl
+// \hcode\pageadmin para construcao de paginas de administradores via rain/tpl
+// \hcode\model\user para utilizacao de metodos e atributos de usuarios.
 use \Slim\Slim;
 use \Hcode\Page;
 use \Hcode\PageAdmin;
 use \Hcode\Model\User;
 
-$app = new \Slim\Slim();
-
+//instancia um objeto para a utilizacao do slim framework
+$app = new Slim();
+//seleciona o metodo de debug true ou false
 $app->config('debug', true);
 
+//rota get para index
 $app->get('/', function() {
-    
+	//instancia uma nova pagina de usuario padrao
 	$page = new Page();
 
 	$page->setTpl("index");
 
 });
-
+//rota get para index de administrador
 $app->get('/admin', function() {
 
 	User::verifyLogin();
@@ -29,7 +34,7 @@ $app->get('/admin', function() {
 	$page->setTpl("index");
 
 });
-
+//rota get para login de administrador
 $app->get('/admin/login', function() {
     
 	$page = new PageAdmin([
@@ -40,7 +45,7 @@ $app->get('/admin/login', function() {
 	$page->setTpl("login");
 
 });
-
+//rota post para login de administrador 
 $app->post('/admin/login', function() {
     
 	User::login($_POST["login"], $_POST["password"]);
@@ -49,7 +54,7 @@ $app->post('/admin/login', function() {
 	exit;
 
 });
-
+//rota get para logout de administrador
 $app->get('/admin/logout', function() {
 
 	User::logout();
@@ -58,7 +63,7 @@ $app->get('/admin/logout', function() {
 	exit;
 
 });
-
+//rota get para lista de usuarios
 $app->get('/admin/users', function(){
 
 	User::verifyLogin();
@@ -74,7 +79,7 @@ $app->get('/admin/users', function(){
 	));
 
 });
-
+//rota get para criacao de usuarios
 $app->get('/admin/users/create', function(){
 
 	User::verifyLogin();
@@ -84,7 +89,7 @@ $app->get('/admin/users/create', function(){
 	$page->setTpl("users-create");
 
 });
-
+//rota get para index
 $app->get("/admin/users/:iduser/delete", function($iduser){
 
 	User::verifyLogin();
@@ -149,6 +154,39 @@ $app->post("/admin/users/:iduser", function($iduser){
 
 	header("Location: /admin/users");
 	exit;
+
+});
+
+$app->get("/admin/forgot", function(){
+
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot");
+
+});
+
+$app->post("/admin/forgot",function(){
+
+	$user = User::getForgot($_POST["email"]);  
+
+	header("Location: /admin/forgot/sent");
+	exit;
+
+});
+
+$app->get("/admin/forgot/sent",function()
+{
+
+	$page = new PageAdmin([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("forgot-sent");
+
 
 });
 
