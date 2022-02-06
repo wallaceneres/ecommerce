@@ -46,5 +46,60 @@ $app->post("/admin/products/create", function(){
 
 });
 
+$app->get("/admin/products/:idproduct", function($idproduct){
+
+    User::verifyLogin();
+
+    $product = new Product();
+
+    $product->get((int)$idproduct);
+
+    $page = new Pageadmin();
+
+    $page->setTpl("products-update",[
+
+        'product'=>$product->getValues()
+
+    ]);
+
+});
+
+$app->post("/admin/products/:idproduct", function($idproduct){
+
+    User::verifyLogin();
+
+    $product = new Product();
+
+    $product->get((int)$idproduct);
+
+    $product->setData($_POST);
+
+    $product->save();
+
+    if(file_exists($_FILES['file']['tmp_name']) || is_uploaded_file($_FILES['file']['tmp_name'])) 
+    {
+    $product->setPhoto($_FILES["file"]);
+    }
+
+    header("Location: /admin/products");
+    exit;
+
+});
+
+$app->get("/admin/products/:idproduct/delete", function($idproduct){
+
+	User::verifyLogin();
+
+	$product = new Product();
+
+	$product->get((int)$idproduct);
+
+	$product->delete();
+
+	header("Location: /admin/products");
+	exit;
+
+});
+
 
 ?>
