@@ -2,9 +2,7 @@
 
 namespace Hcode\Model;
 
-use Exception;
 use \Hcode\DB\Sql;
-use Hcode\Mailer;
 use \Hcode\Model;
 
 class Category extends Model
@@ -117,6 +115,34 @@ class Category extends Model
             ]);
 
         }
+
+    }
+
+    public function addProduct(Product $product)
+    {
+
+        $sql = new Sql();
+
+        $sql->query("INSERT INTO tb_productscategories (idcategory, idproduct) VALUES (:idcategory , :idproduct)", [
+
+            ":idcategory"=>$this->getidcategory(),
+            ":idproduct"=>$product->getidproduct()
+
+        ]);
+
+    }
+
+    public function removeProduct(Product $product)
+    {
+
+        $sql = new Sql();
+
+        $sql->query("DELETE FROM tb_productscategories WHERE idcategory = :idcategory AND idproduct = :idproduct", [
+
+            ":idcategory"=>$this->getidcategory(),
+            ":idproduct"=>$product->getidproduct()
+
+        ]);
 
     }
 
