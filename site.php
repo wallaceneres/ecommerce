@@ -73,4 +73,30 @@ $app->get("/products/:desutl",function($desurl)
 
 });
 
+$app->get("/products", function(){
+
+	$page = new Page();
+
+	$products = Product::listAll();
+
+	$page->setTpl("products",[
+
+		'products' => Product::checkList($products)
+
+	]);
+
+});
+
+$app->get("/cart", function(){
+
+	$page = new Page();
+
+	$page->setTpl("cart",[
+
+		
+		
+	]);
+
+});
+
 ?>
