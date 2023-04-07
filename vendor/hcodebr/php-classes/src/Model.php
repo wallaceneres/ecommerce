@@ -18,7 +18,7 @@ class Model
 		{
 
 			case "get":
-				$this->values[$fieldName];
+				return $this->values[$fieldName];
 
 			case "set":
 				$this->values[$fieldName]= $args[0];
@@ -29,12 +29,9 @@ class Model
 
 	public function setData($data = array())
 	{
-
 		foreach ($data as $key => $value)
 		{
-
-			$this->{"set". $key}($value);
-
+			$this->{"set".$key}($value);
 		}
 
 	}
