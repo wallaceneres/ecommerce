@@ -9,6 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hcode Store</title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/res/site/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/res/site/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/res/site/img/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
