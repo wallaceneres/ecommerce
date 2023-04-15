@@ -21,7 +21,7 @@
                     <div class="product-upper">
                         <img src="/res/site/img/product-2.jpg" alt="">
                     </div>
-                    <h2><a href="">Apple new mac book 2015 March :P</a></h2>
+                    <h2><a href=""><?php echo htmlspecialchars( $value1["vlprice"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a></h2>
                     <div class="product-carousel-price">
                         <ins>$899.00</ins> <del>$999.00</del>
                     </div>  

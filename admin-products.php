@@ -14,9 +14,7 @@ $app->get("/admin/products", function()
     $page = new PageAdmin();
 
     $page->setTpl("products",[
-
         "products"=>$products
-
     ]);
 });
 
@@ -27,9 +25,7 @@ $app->get("/admin/products/create", function()
 
     $page = new PageAdmin();
 
-    $page->setTpl("products-create",[
-        
-    ]);
+    $page->setTpl("products-create");
 
 });
 
