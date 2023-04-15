@@ -18,7 +18,7 @@ class Model
 		{
 
 			case "get":
-				return $this->values[$fieldName];
+				return (isset($this->values[$fieldName])) ? $this->values[$fieldName] : NULL;
 
 			case "set":
 				$this->values[$fieldName]= $args[0];

@@ -1,24 +1,15 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'd187a3805f3180d66227f604cf55bc9d6f3ba154',
         'name' => 'wallaceneres/ecommerce',
         'dev' => true,
     ),
     'versions' => array(
-        'phpmailer/phpmailer' => array(
-            'pretty_version' => 'v5.2.22',
-            'version' => '5.2.22.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../phpmailer/phpmailer',
-            'aliases' => array(),
-            'reference' => 'b18cb98131bd83103ccb26a888fdfe3177b8a663',
-            'dev_requirement' => false,
-        ),
         'rain/raintpl' => array(
             'pretty_version' => '3.0.0',
             'version' => '3.0.0.0',
@@ -38,12 +29,12 @@
             'dev_requirement' => false,
         ),
         'wallaceneres/ecommerce' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'd187a3805f3180d66227f604cf55bc9d6f3ba154',
             'dev_requirement' => false,
         ),
     ),
