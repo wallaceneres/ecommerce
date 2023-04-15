@@ -267,4 +267,22 @@ $app->post('/admin/categories/:id',function($id)
 	exit;
 });
 
+$app->get("/categories/:id",function($idcategory)
+{
+
+	User::verifyLogin();
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+
+	$page = new Page();
+
+	$page->setTpl("category",[
+		"category"=>$category->getValues(),
+		"products"=>[]
+	]);
+
+});
+
 $app->run();
