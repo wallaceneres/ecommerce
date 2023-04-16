@@ -51,7 +51,7 @@
             </div>
             <div class="form-group">
               <label for="desurl">Url</label>
-              <input type="test" class="form-control" id="desurl" name="desurl">
+              <input type="text" class="form-control" id="desurl" name="desurl" placeholder="Url">
             </div>
           </div>
           <!-- /.box-body -->
