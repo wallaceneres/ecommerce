@@ -26,7 +26,7 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th style="width: 10px">#</th>
+                    <th style="width: 10px">Id</th>
                     <th>Nome da Produto</th>
                     <th>Preço</th>
                     <th>Largura</th>
@@ -41,7 +41,7 @@
                   <tr>
                     <td>{$value.idproduct}</td>
                     <td>{$value.desproduct}</td>
-                    <td>{$value.vlprice}</td>
+                    <td>R$ {function="formatPrice($value.vlprice)"}</td>
                     <td>{$value.vlwidth}</td>
                     <td>{$value.vlheight}</td>
                     <td>{$value.vllength}</td>

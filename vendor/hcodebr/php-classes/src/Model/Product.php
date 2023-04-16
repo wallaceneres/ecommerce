@@ -117,46 +117,53 @@ class Product extends Model
 	//metodo para adicionar a imagem do produto no diretório
 	public function setPhoto($file)
 	{
-
-		$extension = explode('.', $file['name']);
-
-		$extension = end($extension);
-
-		switch($extension)
+		//se nenhuma imagem for inserida ele ignora o restante do código
+		if($file["size"] === 0)
 		{
+			$this->checkPhoto();
+		}else{
 
-			case "jpg":
-			case "jpeg":
-				$image = imagecreatefromjpeg($file["tmp_name"]);
-			break;
-			case "gif":
-				$image = imagecreatefromgif($file["tmp_name"]);
-			break;
-			case "png":
-				$image = imagecreatefrompng($file["tmp_name"]);
-			break;
+			$extension = explode('.', $file['name']);
 
+			$extension = end($extension);
+
+			switch($extension)
+			{
+
+				case "jpg":
+				case "jpeg":
+					$image = imagecreatefromjpeg($file["tmp_name"]);
+				break;
+				case "gif":
+					$image = imagecreatefromgif($file["tmp_name"]);
+				break;
+				case "png":
+					$image = imagecreatefrompng($file["tmp_name"]);
+				break;
+
+			}
+
+			$dist = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 
+			'res' . DIRECTORY_SEPARATOR . 
+			'site' . DIRECTORY_SEPARATOR . 
+			'img' . DIRECTORY_SEPARATOR . 
+			'products' . DIRECTORY_SEPARATOR .
+			$this->getidproduct() . '.jpg';
+			
+			//se o arquivo ja existir ele é excluído
+			if(file_exists($dist)){
+				unlink($dist);
+			}
+
+			imagejpeg($image, $dist);
+
+			imagedestroy($image);
+
+			$this->checkPhoto();
 		}
-
-		$dist = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 
-		'res' . DIRECTORY_SEPARATOR . 
-		'site' . DIRECTORY_SEPARATOR . 
-		'img' . DIRECTORY_SEPARATOR . 
-		'products' . DIRECTORY_SEPARATOR .
-		$this->getidproduct() . '.jpg';
-		
-		//se o arquivo ja existir ele é excluído
-		if(file_exists($dist)){
-			unlink($dist);
-		}
-
-		imagejpeg($image, $dist);
-
-		imagedestroy($image);
-
-		$this->checkPhoto();
 
 	}
+
 }
 
 ?>
