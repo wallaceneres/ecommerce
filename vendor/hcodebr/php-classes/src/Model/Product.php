@@ -141,6 +141,11 @@ class Product extends Model
 		'img' . DIRECTORY_SEPARATOR . 
 		'products' . DIRECTORY_SEPARATOR .
 		$this->getidproduct() . '.jpg';
+		
+		//se o arquivo ja existir ele é excluído
+		if(file_exists($dist)){
+			unlink($dist);
+		}
 
 		imagejpeg($image, $dist);
 
