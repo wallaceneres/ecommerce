@@ -3,6 +3,7 @@
 use Hcode\PageAdmin;
 use Hcode\Model\User;
 use Hcode\Model\Category;
+use Hcode\Model\Product;
 
 $app->get('/admin/categories',function()
 {
@@ -93,6 +94,58 @@ $app->post('/admin/categories/:id',function($id)
 
 	header("Location: /admin/categories");
 	exit;
+});
+
+$app->get("/admin/categories/:idcategory/products",function($idcategory){
+
+	User::verifyLogin();
+
+	$category = new Category();
+
+	$page = new PageAdmin();
+
+	$category->get((int)$idcategory);
+
+	$page->setTpl("categories-products",[
+		"category"=>$category->getValues(),
+		"productsRelated"=>$category->getproducts(),
+		"productsNotRelated"=>$category->getproducts(false)
+	]);
+
+});
+
+$app->get("/admin/categories/:idcategory/products/:idproduct/add",function($idcategory, $idproduct){
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+
+	$product = new Product();
+
+	$product->get((int)$idproduct);
+
+	$category->addProduct($product);
+
+	header("Location: /admin/categories/" . $idcategory . "/products");
+	exit;
+
+});
+
+$app->get("/admin/categories/:idcategory/products/:idproduct/remove",function($idcategory, $idproduct){
+
+	$category = new Category();
+
+	$category->get((int)$idcategory);
+
+	$product = new Product();
+
+	$product->get((int)$idproduct);
+
+	$category->RemoveProduct($product);
+
+	header("Location: /admin/categories/" . $idcategory . "/products");
+	exit;
+
 });
 
 ?>

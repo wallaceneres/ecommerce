@@ -79,6 +79,7 @@ class Product extends Model
 		]);
 	}
 
+	//metodo para verificar se o produto existe no diretorio e definir qual url carregar no serdesphoto
 	public function checkPhoto()
 	{
 
@@ -112,6 +113,8 @@ class Product extends Model
 
 	}
 
+
+	//metodo para adicionar a imagem do produto no diretório
 	public function setPhoto($file)
 	{
 
