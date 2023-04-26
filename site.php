@@ -14,7 +14,6 @@ $app->get('/',function()
 	$page->setTpl("index",[
 
 		"products"=>Product::checklist($products)
-
 	]);
 
 });

@@ -16,17 +16,17 @@ class Cart extends Model
 
 		$cart = new Cart();
 
-		//verificar se tem a sessão e se o id da sessão é maior que zero, caso positivo, chama a funcao get para carregar os dados do banco usando um carrinho pre existente
+		//verificar se tem a sessão e se o id do carrinho é maior que zero, caso positivo, chama a funcao get para carregar os dados do banco usando um carrinho pre existente
 		if(isset($_SESSION[Cart::SESSION]) && (int)$_SESSION[Cart::SESSION]['idcart'] > 0)
 		{
-			var_dump($_SESSION);
 			$cart->get((int)$_SESSION[Cart::SESSION]['idcart']);
 			
 		}else
 		{
-
+			//funcao para procurar na tabela tb_carts se já existe uma session com carrinho ativo.
 			$cart->getFromSessionId();
 	
+			//se não encontrar nenhum dado na tabela tb_carts
 			if(!(int)$cart->getidcart() > 0)
 			{
 
@@ -65,6 +65,7 @@ class Cart extends Model
 
 	}
 
+	//metodo para pesquisar no banco se ja existe
 	public function getFromSessionId()
 	{
 		$sql = new Sql();
@@ -77,9 +78,10 @@ class Cart extends Model
 		{
 			$this->setData($results[0]);
 		}
+
 	}
 
-	//carrega os dados do carrinho do banco de dados
+	//carrega os dados do carrinho recuperado da session e buscando no banco de dados
 	public function get(int $idcart)
 	{
 

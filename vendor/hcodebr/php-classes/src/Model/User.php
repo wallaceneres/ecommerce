@@ -37,22 +37,24 @@ class User extends Model
 			||
 			!(int)$_SESSION[User::SESSION]["iduser"] > 0
 		){
+			//Não está logado
 			return false;
 		}else
 		{
 			if($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true)
 			{
-
+				//Está logado e é administrador
 				return true;
-
+		
 			} else if($inadmin === false)
 			{
-
+				//se esta logado e nao é adm retorna falso
+				//o metodo verifylogin realizara o cast para true para redirecionar para a pagina de login nas paginas de adm
+				//else que realizara a verificacao de paginas de usuario comum (nao adm)
 				return true;
-
 			}else
 			{
-				return false;
+				return false;//retorna falso para qualquer outra condição
 			}
 		}
 
@@ -95,9 +97,9 @@ class User extends Model
 		}
 	}
 
-	public static function verifyLogin($inadmin = true)
+	public static function verifyLogin()
 	{
-		if(!User::checkLogin($inadmin))
+		if(!User::checkLogin())//se o check login retornar falso significa que o usuario nao pode acessar a pagina, precisamos realizar um cast para true somente para realizar o redirect
 		{
 			header("Location: /admin/login");
 			exit;
@@ -107,7 +109,7 @@ class User extends Model
 	public static function logout()
 	{
 
-		session_destroy();
+		session_unset();
 
 	}
 
