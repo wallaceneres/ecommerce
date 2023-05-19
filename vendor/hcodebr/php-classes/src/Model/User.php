@@ -147,7 +147,6 @@ class User extends Model
 		if (password_verify($password, $data["despassword"]) === true)
 		{
 			//if($password === $data["despassword"]){
-
 			$user = new User();
 
 			$data['desperson'] = utf8_encode($data['desperson']);
@@ -161,7 +160,7 @@ class User extends Model
 		}else
 		//se a senha estiver incorreta, exibe outro exception
 		{
-			throw new \Exception("Usuario inexistente ou senha inválida");
+			throw new \Exception("Usuario inexistente ou senha inválida---");
 		}
 	}
 
@@ -247,7 +246,7 @@ class User extends Model
 			"iduser"=>$this->getiduser(),
 			":desperson"=>utf8_decode($this->getdesperson()),
 			":deslogin"=>$this->getdeslogin(),
-			":despassword"=>User::getPasswordHash($this->getdespassword()),
+			":despassword"=>$this->getdespassword(),
 			":desemail"=>$this->getdesemail(),
 			":nrphone"=>$this->getnrphone(),
 			":inadmin"=>$this->getinadmin()
