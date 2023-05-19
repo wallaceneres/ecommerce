@@ -11,6 +11,7 @@ class User extends Model
 	const SESSION = "User";
 	const SECRET = "HcodePhp7_Secret";
 	const ERROR = "UserError";
+	const SUCCESS = "UserSuccess";
 	const ERROR_REGISTER ="UserErrorRegister";
 
 	public static function getFromSession()
@@ -79,6 +80,27 @@ class User extends Model
 		$msg = (isset($_SESSION[User ::ERROR])) ? $_SESSION[User::ERROR] : '';
 
 		User::clearMsgError();
+
+		return $msg;
+
+	}
+
+	public static function setMsgSuccess($msg)
+	{
+		$_SESSION[User::SUCCESS] = (string)$msg;
+	}
+
+	public static function clearMsgSuccess()
+	{
+		$_SESSION[User::SUCCESS] = NULL;
+	}
+
+	public static function getMsgSuccess()
+	{
+		
+		$msg = (isset($_SESSION[User ::SUCCESS])) ? $_SESSION[User::SUCCESS] : '';
+
+		User::clearMsgSuccess();
 
 		return $msg;
 
@@ -297,7 +319,7 @@ class User extends Model
 			":deslogin"=>$login
 
 		]);
-		
+
 		return (count($results) > 0);
 
 	}

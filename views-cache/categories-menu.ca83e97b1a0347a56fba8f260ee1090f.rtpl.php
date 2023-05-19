@@ -1,1 +1,0 @@
-<?php if(!class_exists('Rain\Tpl')){exit;}?><li><a href="/categories/10">Video Games</a></li>
