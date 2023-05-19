@@ -10,6 +10,7 @@ class User extends Model
 
 	const SESSION = "User";
 	const SECRET = "HcodePhp7_Secret";
+	const ERROR = "UserError";
 
 	public static function getFromSession()
 	{
@@ -48,8 +49,8 @@ class User extends Model
 		
 			} else if($inadmin === false)
 			{
-				//se esta logado e nao é adm retorna falso
-				//o metodo verifylogin realizara o cast para true para redirecionar para a pagina de login nas paginas de adm
+				//se esta logado e nao é adm retorna true
+				//o metodo verifylogin realizara o cast para false para redirecionar para a pagina de login nas paginas de adm
 				//else que realizara a verificacao de paginas de usuario comum (nao adm)
 				return true;
 			}else
@@ -61,12 +62,33 @@ class User extends Model
 
 	}
 
+	public static function setMsgError($msg)
+	{
+		$_SESSION[User::ERROR] = (string)$msg;
+	}
+
+	public static function clearMsgError()
+	{
+		$_SESSION[User::ERROR] = NULL;
+	}
+
+	public static function getMsgError()
+	{
+		
+		$msg = (isset($_SESSION[User ::ERROR])) ? $_SESSION[User::ERROR] : '';
+
+		User::clearMsgError();
+
+		return $msg;
+
+	}
+
 	public static function login($login, $password)
 	{
 
 		$sql = new Sql();
 		//realiza uma consulta no banco
-		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
+		$results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b ON a.idperson = b.idperson WHERE a.deslogin = :LOGIN", array(
 			":LOGIN"=>$login
 		));
 		//se o resultado do array for 0 é exibida uma exception e encerra a execucao do codigo
@@ -78,11 +100,13 @@ class User extends Model
 		$data = $results[0];
 
 		//se a senha digitada for igual a senha armazenada, instancia a classe usuario
-		//if (password_verify($password, $data["despassword"]) === true)
-		//{
-			if($password === $data["despassword"]){
+		if (password_verify($password, $data["despassword"]) === true)
+		{
+			//if($password === $data["despassword"]){
 
 			$user = new User();
+
+			$data['desperson'] = utf8_encode($data['desperson']);
 			//insere os dados do usuario atraves de setters
 			$user->setData($data);
 			//registra a sessão com os dados do usuario
@@ -97,12 +121,17 @@ class User extends Model
 		}
 	}
 
-	public static function verifyLogin()
+	public static function verifyLogin($inadmin = true)
 	{
-		if(!User::checkLogin())//se o check login retornar falso significa que o usuario nao pode acessar a pagina, precisamos realizar um cast para true somente para realizar o redirect
+		if(!User::checkLogin($inadmin))
 		{
-			header("Location: /admin/login");
-			exit;
+			if($inadmin){
+				header("Location: /admin/login");
+				exit;
+			}else{
+				header("Location: /login");
+				exit;
+			}
 		}
 	}
 
@@ -128,8 +157,8 @@ class User extends Model
 
 		$results = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)",array(
 			":desperson"=>$this->getdesperson(),
-			":deslogin"=>$this->getdeslogin(),
-			":despassword"=>$this->getdespassword(),
+			":deslogin"=>utf8_decode($this->getdeslogin()),
+			":despassword"=>User::getPasswordHash($this->getdespassword()),
 			":desemail"=>$this->getdesemail(),
 			":nrphone"=>$this->getnrphone(),
 			":inadmin"=>$this->getinadmin()
@@ -158,7 +187,11 @@ class User extends Model
 			":IDUSER"=>$iduser
 			]);
 
-		$this->setData($results[0]);
+		$data = $results[0];
+		
+		$data['desperson'] = utf8_encode($data['desperson']);
+
+		$this->setData($data);
 	}
 
 	public function update()
@@ -168,9 +201,9 @@ class User extends Model
 
 		$results = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)",array(
 			"iduser"=>$this->getiduser(),
-			":desperson"=>$this->getdesperson(),
+			":desperson"=>utf84_decode($this->getdesperson()),
 			":deslogin"=>$this->getdeslogin(),
-			":despassword"=>$this->getdespassword(),
+			":despassword"=>User::getPasswordHash($this->getdespassword()),
 			":desemail"=>$this->getdesemail(),
 			":nrphone"=>$this->getnrphone(),
 			":inadmin"=>$this->getinadmin()
@@ -220,6 +253,15 @@ class User extends Model
 
 
 		}
+
+	}
+
+	public static function getPasswordHash($password)
+	{
+
+		return password_hash($password, PASSWORD_DEFAULT, [
+			'cost'=>12
+		]);
 
 	}
 
