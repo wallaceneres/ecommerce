@@ -11,6 +11,7 @@ class User extends Model
 	const SESSION = "User";
 	const SECRET = "HcodePhp7_Secret";
 	const ERROR = "UserError";
+	const ERROR_REGISTER ="UserErrorRegister";
 
 	public static function getFromSession()
 	{
@@ -78,6 +79,27 @@ class User extends Model
 		$msg = (isset($_SESSION[User ::ERROR])) ? $_SESSION[User::ERROR] : '';
 
 		User::clearMsgError();
+
+		return $msg;
+
+	}
+
+	public static function setErrorRegister($msg)
+	{
+		$_SESSION[User::ERROR_REGISTER] = (string)$msg;
+	}
+
+	public static function clearErrorRegister()
+	{
+		$_SESSION[User::ERROR_REGISTER] = NULL;
+	}
+
+	public static function getErrorRegister()
+	{
+		
+		$msg = (isset($_SESSION[User ::ERROR_REGISTER])) ? $_SESSION[User::ERROR_REGISTER] : '';
+
+		User::clearErrorRegister();
 
 		return $msg;
 
@@ -201,7 +223,7 @@ class User extends Model
 
 		$results = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)",array(
 			"iduser"=>$this->getiduser(),
-			":desperson"=>utf84_decode($this->getdesperson()),
+			":desperson"=>utf8_decode($this->getdesperson()),
 			":deslogin"=>$this->getdeslogin(),
 			":despassword"=>User::getPasswordHash($this->getdespassword()),
 			":desemail"=>$this->getdesemail(),
@@ -262,6 +284,21 @@ class User extends Model
 		return password_hash($password, PASSWORD_DEFAULT, [
 			'cost'=>12
 		]);
+
+	}
+
+	public static function checkLoginExist($login)
+	{
+
+		$sql = new Sql();
+
+		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin",[
+
+			":deslogin"=>$login
+
+		]);
+		
+		return (count($results) > 0);
 
 	}
 
